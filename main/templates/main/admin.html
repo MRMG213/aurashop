@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - AURA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: orange;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 40px;
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+        }
+        
+        .admin-badge {
+            background-color: black;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        
+        .main-title {
+            font-size: 36px;
+            text-align: center;
+            color: black;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .admin-layout {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .left-column {
+            flex: 1;
+        }
+        
+        .right-column {
+            flex: 2;
+        }
+        
+        .admin-panel {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .admin-item {
+            margin-bottom: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 18px;
+        }
+        
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+        
+        .orders-table {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            text-align: left;
+            padding: 15px 0;
+            color: #666;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 2px solid #eee;
+        }
+        
+        td {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 18px;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .status-processing {
+            color: #ff9900;
+            font-weight: bold;
+        }
+        
+        .status-completed {
+            color: #00aa00;
+            font-weight: bold;
+        }
+        
+        .action-btn {
+            padding: 8px 20px;
+            background-color: orange;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
+        .danger-btn {
+            background-color: #ff3333;
+            color: white;
+        }
+        
+        .divider {
+            border: none;
+            height: 1px;
+            background: #ddd;
+            margin: 50px 0;
+        }
+        
+        .footer {
+            background-color: orange;
+            padding: 30px 0;
+            text-align: center;
+            color: black;
+            margin-top: auto;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 900px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">AURA</a>
+        <div class="admin-badge">АДМИНИСТРАТОР</div>
+    </header>
+    <div class="admin-container">
+        <h1 class="main-title">АДМИН-ПАНЕЛЬ</h1>
+        
+        <div class="admin-layout">
+            <div class="left-column">
+                <div class="admin-panel">
+                    <h2 class="section-title">Админ-панель</h2>
+                    
+                    <div class="admin-item">
+                        <strong>Назначение ролей</strong>
+                        <button class="action-btn">Управление</button>
+                    </div>
+                    
+                    <div class="admin-item">
+                        <strong>Удаление товаров</strong>
+                        <button class="action-btn danger-btn">Удалить</button>
+                    </div>
+                    
+                    <div class="admin-item">
+                        <strong>Модерация контента</strong>
+                        <button class="action-btn">Модерировать</button>
+                    </div>
+                    
+                    <div class="admin-item">
+                        <strong>Управление пользователями</strong>
+                        <button class="action-btn">Список</button>
+                    </div>
+                    
+                    <div class="admin-item">
+                        <strong>Статистика магазина</strong>
+                        <button class="action-btn">Просмотр</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="orders-table">
+                    <h2 class="section-title">Просмотр заказов</h2>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="15%">ID</th>
+                                <th width="35%">Покупатель</th>
+                                <th width="25%">Сумма</th>
+                                <th width="25%">Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>#001</strong>
+                                </td>
+                                <td>
+                                    Альберт Н.
+                                </td>
+                                <td>
+                                    <strong>2477 RUB</strong>
+                                </td>
+                                <td class="status-processing">
+                                    В обработке
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <strong>#002</strong>
+                                </td>
+                                <td>
+                                    Артём Л.
+                                </td>
+                                <td>
+                                    <strong>5737 RUB</strong>
+                                </td>
+                                <td class="status-completed">
+                                    Выполнен
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <strong>#003</strong>
+                                </td>
+                                <td>
+                                    Арсений А.
+                                </td>
+                                <td>
+                                    <strong>1245 RUB</strong>
+                                </td>
+                                <td class="status-processing">
+                                    В обработке
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <strong>#004</strong>
+                                </td>
+                                <td>
+                                    Дмитрий С.
+                                </td>
+                                <td>
+                                    <strong>8990 RUB</strong>
+                                </td>
+                                <td class="status-completed">
+                                    Выполнен
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <strong>#005</strong>
+                                </td>
+                                <td>
+                                    Елена В.
+                                </td>
+                                <td>
+                                    <strong>3450 RUB</strong>
+                                </td>
+                                <td class="status-processing">
+                                    В обработке
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="divider">
+        
+        <div style="background-color: white; padding: 30px; border-radius: 10px;">
+            <h2 class="section-title">Быстрые действия</h2>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="action-btn" style="padding: 12px 25px;">Добавить товар</button>
+                <button class="action-btn" style="padding: 12px 25px;">Просмотреть отзывы</button>
+                <button class="action-btn" style="padding: 12px 25px;">Сгенерировать отчёт</button>
+                <button class="action-btn danger-btn" style="padding: 12px 25px;">Архивировать старые заказы</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-title">AURA</div>
+        <div class="copyright">
+            2025 Интернет-магазин AURA.<br>
+            Все права защищены.
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина - AURA</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        
+        .header { 
+            background-color: orange; 
+            padding: 10px 0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .logo { 
+            font-size: 40px; 
+            font-weight: bold; 
+            color: black;
+            margin: 10px 20px; 
+            text-decoration: none;
+        }
+        
+        .search { 
+            flex: 1; 
+            margin: 10px 20px;
+            padding: 10px 20px; 
+            max-width: 500px;
+        }
+        
+        .search input {
+            width: 100%;               
+            padding: 10px 20px;         
+            font-size: 16px;            
+            border: none;
+            border-radius: 5px;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+            margin-right: 20px;
+        }
+        
+        .profile-btn, .cart-btn { 
+            padding: 10px 25px;
+            background-color: white; 
+            border: none; 
+            cursor: pointer; 
+            text-decoration: none;
+            color: black;
+            display: inline-block;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .profile-btn:hover, .cart-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .cart-btn.active {
+            background-color: #ff9900;
+            color: white;
+        }
+        
+        .cart-container {
+            width: 800px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .cart-title {
+            font-size: 36px;
+            color: #000;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .cart-counter {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .cart-items {
+            margin-bottom: 40px;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 25px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 10px;
+        }
+        .item-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            background-color: orange;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #ff9900;
+        }
+        
+        .quantity {
+            font-size: 20px;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .remove-btn {
+            padding: 10px 20px;
+            background-color: #ff3333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .remove-btn:hover {
+            background-color: #cc0000;
+        }
+        
+        .cart-total {
+            background-color: #f0f0f0;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .total-label {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .total-amount {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .payment-section {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .payment-btn {
+            padding: 20px 60px;
+            background-color: orange;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 24px;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+            width: 300px;
+        }
+        
+        .payment-btn:hover {
+            background-color: #ff9900;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        
+        .empty-text {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .continue-shopping {
+            padding: 15px 40px;
+            background-color: orange;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .footer { 
+            background-color: orange; 
+            padding: 30px 0; 
+            text-align: center; 
+            color: black; 
+            margin-top: auto;
+        }
+        
+        .footer-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .footer-subtitle {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .success {
+            background-color: #e6ffe6;
+            color: #006600;
+            border: 1px solid #99ff99;
+        }
+        
+        .error {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            border: 1px solid #ff9999;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">AURA</a>
+        <div class="search">
+            <input type="text" placeholder="Найти на Aura">
+        </div>
+        <a href="/admin-panel/">
+    <button class="cart-btn">
+        Админ-панель
+    </button>
+</a>
+        <div class="header-buttons">
+            <a href="/profile/" class="profile-btn">Профиль</a>
+            <a href="/cart/">
+    <button class="cart-btn">
+        Корзина
+    </button>
+</a>
+    </header>
+
+    <div class="cart-container">
+        <div class="cart-title">КОРЗИНА</div>
+        
+        <div class="cart-counter" id="itemCount">3 ТОВАРА</div>
+        
+        {% if success %}
+        <div class="message success">{{ success }}</div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="message error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="cart-items" id="cartItems">
+            <div class="cart-item" data-id="1" data-price="799">
+                <div><img src="/static/images/1.png" width="150" alt="Кроссовки JOYCITY"></div>
+                <div class="item-details">
+                    <div class="item-name">JOYCITY КРОССОВКИ</div>
+                    <div class="item-price">777 RUB</div>
+                </div>
+                <div class="item-controls">
+                    <div class="quantity-controls">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="remove-btn">Удалить</button>
+                </div>
+            </div>
+            
+            <div class="cart-item" data-id="2" data-price="899">
+                <div><img src="/static/images/2.png" width="150" alt="Футболка"></div>
+                <div class="item-details">
+                    <div class="item-name">Футболка</div>
+                    <div class="item-price">500 RUB</div>
+                </div>
+                <div class="item-controls">
+                    <div class="quantity-controls">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="remove-btn">Удалить</button>
+                </div>
+            </div>
+            
+            <div class="cart-item" data-id="3" data-price="779">
+                <div><img src="/static/images/6.png" width="150" alt="Джинсы"></div>
+                <div class="item-details">
+                    <div class="item-name">Джинсы</div>
+                    <div class="item-price">1200 RUB</div>
+                </div>
+                <div class="item-controls">
+                    <div class="quantity-controls">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="remove-btn">Удалить</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cart-total">
+            <div class="total-row">
+                <div class="total-label">ИТОГО:</div>
+                <div class="total-amount" id="totalAmount">2477 RUB</div>
+            </div>
+        </div>
+        
+        <div class="payment-section">
+            <button class="payment-btn">ОПЛАТИТЬ</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-title">AURA</div>
+        <div class="footer-subtitle">2025 ИНТЕРНЕТ-МАГАЗИН AURA.</div>
+        <div class="copyright">
+            Все права защищены.
+        </div>
+    </footer>
+</body>
+</html>
